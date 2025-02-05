@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    //private EnemyControl enemyControl;
+    private EnemyControl enemyControl;
     public bool isStop = false;
 
     public int maxHp = 0;
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     public int ex = 0;
     public int score = 0;
     public Player player;
-    //public MainControl mainControl;
+    public MainControl mainControl;
     public GameObject bulletPrefab;
 
     private void Start()
@@ -174,7 +174,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void SetHp(int damage)
+    public void SetHp(int damage)
     {
         if (!isStop)
         {
@@ -183,7 +183,7 @@ public class Enemy : MonoBehaviour
             {
                 curHp = 0;
                 player.SetEx(ex);
-                //mainControl.SetScore(score);
+                mainControl.SetScore(score);
                 Destroy(gameObject);
             }
         }

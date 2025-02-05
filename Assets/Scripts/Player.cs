@@ -76,21 +76,21 @@ public class Player : MonoBehaviour
         1,10,5,20
     };
 
-    private List<int> skillLevel = new List<int>()
+    public List<int> skillLevel = new List<int>()
     {
         0, 0, 0, 0
     };
 
-    //public MessageBox messagebox;
+    public MessageBox messageBox;
     private bool isStop = false;
-    //private MainControl mainControl;
+    private MainControl mainControl;
     
     private Rigidbody rigid;
 
 
     private void Start()
     {
-        //mainControl = GameObject.Find("MainControl").GetComponent<MainControl>();
+        mainControl = GameObject.Find("MainControl").GetComponent<MainControl>();
         rigid = GetComponent<Rigidbody>();
     }
 
@@ -175,8 +175,8 @@ public class Player : MonoBehaviour
         Vector3 dir = new Vector3(targetEnemy.position.x, 0, targetEnemy.position.z) -
                       new Vector3(firePoint.position.x, 0, firePoint.position.z);
         Quaternion targetRot = Quaternion.LookRotation(dir);
-        //Bullet bullet = Instantiate(bulletPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
-        //bullet.damage = attackDamage;
+        Bullet bullet = Instantiate(bulletPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
+        bullet.damage = attackDamage;
     }
 
     public void UseSkill(int skillName)
@@ -206,17 +206,17 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    //messageBox.ShowMessageBox("마나가 부족합니다.");
+                    messageBox.ShowMessageBox("마나가 부족합니다.");
                 }
             }
             else
             {
-                //messageBox.ShowMessageBox("스킬을 아직 사용할 수 없습니다.");
+                messageBox.ShowMessageBox("스킬을 아직 사용할 수 없습니다.");
             }
         }
         else
         {
-            //messageBox.ShowMessageBox("스킬을 아직 획득하지 않았습니다.");
+            messageBox.ShowMessageBox("스킬을 아직 획득하지 않았습니다.");
         }
     }
 
@@ -226,7 +226,7 @@ public class Player : MonoBehaviour
 
         if (!targetEnemy)
         {
-            //messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
+            messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
         }
         else
         {
@@ -236,10 +236,10 @@ public class Player : MonoBehaviour
                 Vector3 dir = new Vector3(targetEnemy.position.x, 0, targetEnemy.position.z) -
                               new Vector3(firePoint.position.x, 0, firePoint.position.z);
                 Quaternion targetRot = Quaternion.LookRotation(dir);
-                //Bullet bullet = Instantiate(cannonPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
-                //bullet.damage = attackDamage / 3;
+                Bullet bullet = Instantiate(cannonPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
+                bullet.damage = attackDamage / 3;
                 mp = mp - skillConsume[skillNum];
-                //mainControl.mpBar.value = (float)mp / maxHp;
+                mainControl.mpBar.value = (float)mp / maxHp;
             }
         }
         yield return new WaitForSeconds(skillDelay[skillNum]);
@@ -251,15 +251,15 @@ public class Player : MonoBehaviour
 
         if (!targetEnemy)
         {
-            //messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
+            messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
         }
         else
         {
-            //Bullet.bullet = Instantiate(tracerPrefab, firePoint.position, tracerPrefab.transform.position).GetComponent<Bullet>();
-            //bullet.damage = attackDamage;
-            //bullet.SetEnemy(targetEnemy);
+            Bullet bullet = Instantiate(tracerPrefab, firePoint.position, tracerPrefab.transform.rotation).GetComponent<Bullet>();
+            bullet.damage = attackDamage;
+            bullet.SetEnemy(targetEnemy);
             mp = mp - skillConsume[skillNum];
-            //mainControl.mpBar.value = (float)mp / maxHp;
+            mainControl.mpBar.value = (float)mp / maxHp;
         }
         yield return new WaitForSeconds(skillDelay[skillNum]);
         isSkill[skillNum] = false;
@@ -270,7 +270,7 @@ public class Player : MonoBehaviour
 
         moveSpeed *= 1.4f;
         mp = mp - skillConsume[skillNum];
-        //mainControl.mpBar.value = (float)mp / maxHp;
+        mainControl.mpBar.value = (float)mp / maxHp;
         yield return new WaitForSeconds(skillDelay[skillNum]);
         moveSpeed = baseMoveSpeed;
         isSkill[skillNum] = false;
@@ -282,7 +282,7 @@ public class Player : MonoBehaviour
         shieldHp = maxHp;
         shieldTime = 5.0f;
         mp = mp - skillConsume[skillNum];
-        //mainControl.mpBar.value = (float)mp / maxHp;
+        mainControl.mpBar.value = (float)mp / maxHp;
         yield return new WaitForSeconds(skillDelay[skillNum]);
         isSkill[skillNum] = false;
         yield return new WaitUntil(() => shieldTime <= 0);
@@ -300,14 +300,14 @@ public class Player : MonoBehaviour
             else
             {
                 hp -= damage;
-                //mainControl.hpBar.value = (float)hp / maxHp;
+                mainControl.hpBar.value = (float)hp / maxHp;
 
                 if (hp <= 0)
                 {
-                    //mainControl.hpBar.value = 0;
+                    mainControl.hpBar.value = 0;
                     hp = 0;
                     Time.timeScale = 0;
-                    //mainControl.OpenMenuUI();
+                    mainControl.OpenMenuUI();
                 }
                 
             }
@@ -317,7 +317,7 @@ public class Player : MonoBehaviour
     public void SetEx(int ex)
     {
         curEx += ex;
-        //mainControl.exBar.value = (float)curEx / maxEx;
+        mainControl.exBar.value = (float)curEx / maxEx;
         if (curEx > maxEx)
         {
             if (level < ExNum.Count)
@@ -332,11 +332,11 @@ public class Player : MonoBehaviour
                 mp = maxMp;
                 attackDamage = (int)(attackDamage + (attackDamage * 0.1f));
 
-                // mainControl.LvText.text = "Lv." + level;
-                // mainControl.StopLvText.text = "Lv." + level;
-                // mainControl.hpBar.value = 1;
-                // mainControl.mpBar.value = 1;
-                // mainControl.OpenStopUI();
+                mainControl.lvText.text = "Lv." + level;
+                mainControl.stopLvText.text = "Lv." + level;
+                mainControl.hpBar.value = 1;
+                mainControl.mpBar.value = 1;
+                mainControl.OpenStopUI();
 
             }
         }

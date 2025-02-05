@@ -52,8 +52,8 @@ public class Bullet : MonoBehaviour
         {
             if (other.CompareTag("Enemy"))
             {
-                //Enemy enemy = other.GetComponent<Enemy>();
-                //enemy.SetHp(damage);
+                Enemy enemy = other.GetComponent<Enemy>();
+                enemy.SetHp(damage);
                 Destroy(gameObject);
             }
         }

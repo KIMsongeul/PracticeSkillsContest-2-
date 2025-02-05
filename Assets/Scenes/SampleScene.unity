@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &72497316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 72497317}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &72497317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72497316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.054, y: 2.51, z: -0.027}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1576775981}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &462623709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e9ba8898e6bf7874f809297da99b649d, type: 3}
@@ -283,7 +314,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2709821007707306535, guid: e9ba8898e6bf7874f809297da99b649d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 72497317}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9ba8898e6bf7874f809297da99b649d, type: 3}
 --- !u!1 &963194225
@@ -378,6 +412,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1576775981 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2709821007707306535, guid: e9ba8898e6bf7874f809297da99b649d, type: 3}
+  m_PrefabInstance: {fileID: 888515339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1951686693
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,7 +478,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e148831544047634092111fc2ea1cf5e, type: 2}
+  - {fileID: 2100000, guid: 1e18a9cc930555f4c9dcd7e93097d778, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -559,19 +598,21 @@ MonoBehaviour:
   attackRange: 10
   attackDelay: 1
   attackDamage: 3
-  turret: {fileID: 0}
-  firePoint: {fileID: 0}
+  turret: {fileID: 1576775981}
+  firePoint: {fileID: 72497317}
   turretTurnSpeed: 50
   turretPitchSpeed: 30
   bulletPrefab: {fileID: 1714861916002491954, guid: 3d46d80627444b84b9e6de6120975f9e, type: 3}
-  cannonPrefab: {fileID: 0}
-  tracerPrefab: {fileID: 0}
+  cannonPrefab: {fileID: 1714861916002491954, guid: 85c256869b0480d479b26125bb2bc9b6, type: 3}
+  tracerPrefab: {fileID: 1714861916002491954, guid: 718e918dea683ac499f2827d87810270, type: 3}
   detectionRange: 10
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
   minRot: 5
   targetEnemy: {fileID: 0}
+  skillLevel: 00000000000000000000000000000000
+  messageBox: {fileID: 0}
 --- !u!4 &1952064111
 Transform:
   m_ObjectHideFlags: 0
