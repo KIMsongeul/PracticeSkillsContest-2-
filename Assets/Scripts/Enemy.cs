@@ -23,15 +23,15 @@ public class Enemy : MonoBehaviour
 
     public int damage = 0;
 
-    public int ex = 0;
-    public int score = 0;
+    public int ex = 10;
+    public int score = 10;
     public Player player;
     public MainControl mainControl;
     public GameObject bulletPrefab;
 
     private void Start()
     {
-        //mainControl = GameObject.Find("MainControl").GetComponent<MainControl>();
+        mainControl = GameObject.Find("MainControl").GetComponent<MainControl>();
     }
 
     private void Update()
@@ -132,6 +132,7 @@ public class Enemy : MonoBehaviour
                 {
                     player.SetHp(damage);
                     Destroy(gameObject);
+                    Debug.Log("-hp");
                 }
                     break;
                 case EnemyControl.EnemyName.Shoot:

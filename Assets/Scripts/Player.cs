@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
     {
         if (isTarget)
         {
-            attackTimer = Time.deltaTime;
+            attackTimer += Time.deltaTime;
         }
     }
 
@@ -238,7 +238,7 @@ public class Player : MonoBehaviour
                 Quaternion targetRot = Quaternion.LookRotation(dir);
                 Bullet bullet = Instantiate(cannonPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
                 bullet.damage = attackDamage / 3;
-                mp = mp - skillConsume[skillNum];
+                mp -= skillConsume[skillNum];
                 mainControl.mpBar.value = (float)mp / maxHp;
             }
         }
@@ -301,6 +301,7 @@ public class Player : MonoBehaviour
             {
                 hp -= damage;
                 mainControl.hpBar.value = (float)hp / maxHp;
+                Debug.Log("hpBar value change");
 
                 if (hp <= 0)
                 {
