@@ -178,6 +178,168 @@ public class Player : MonoBehaviour
         //Bullet bullet = Instantiate(bulletPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
         //bullet.damage = attackDamage;
     }
-    
+
+    public void UseSkill(int skillName)
+    {
+        if (skillLevel[skillName] > 0)
+        {
+            if (!isSkill[skillName])
+            {
+                if (mp >= skillConsume[skillName])
+                {
+                    isSkill[skillName] = true;
+                    switch (skillName)
+                    {
+                        case (int)SkillName.cannon:
+                            StartCoroutine("Cannon");
+                            break;
+                        case (int)SkillName.tracer:
+                            StartCoroutine("tracer");
+                            break;
+                        case (int)SkillName.fast:
+                            StartCoroutine("fast");
+                            break;
+                        case (int)SkillName.shield:
+                            StartCoroutine("shield");
+                            break;
+                    }
+                }
+                else
+                {
+                    //messageBox.ShowMessageBox("마나가 부족합니다.");
+                }
+            }
+            else
+            {
+                //messageBox.ShowMessageBox("스킬을 아직 사용할 수 없습니다.");
+            }
+        }
+        else
+        {
+            //messageBox.ShowMessageBox("스킬을 아직 획득하지 않았습니다.");
+        }
+    }
+
+    IEnumerator Cannon()
+    {
+        int skillNum = (int)SkillName.cannon;
+
+        if (!targetEnemy)
+        {
+            //messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                yield return new WaitForSeconds(0.2f);
+                Vector3 dir = new Vector3(targetEnemy.position.x, 0, targetEnemy.position.z) -
+                              new Vector3(firePoint.position.x, 0, firePoint.position.z);
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                //Bullet bullet = Instantiate(cannonPrefab, firePoint.position, targetRot).GetComponent<Bullet>();
+                //bullet.damage = attackDamage / 3;
+                mp = mp - skillConsume[skillNum];
+                //mainControl.mpBar.value = (float)mp / maxHp;
+            }
+        }
+        yield return new WaitForSeconds(skillDelay[skillNum]);
+        isSkill[skillNum] = false;
+    }
+    IEnumerator Tracer()
+    {
+        int skillNum = (int)SkillName.tracer;
+
+        if (!targetEnemy)
+        {
+            //messageBox.ShowMessageBox("공격할 수 있는 적이 없습니다.");
+        }
+        else
+        {
+            //Bullet.bullet = Instantiate(tracerPrefab, firePoint.position, tracerPrefab.transform.position).GetComponent<Bullet>();
+            //bullet.damage = attackDamage;
+            //bullet.SetEnemy(targetEnemy);
+            mp = mp - skillConsume[skillNum];
+            //mainControl.mpBar.value = (float)mp / maxHp;
+        }
+        yield return new WaitForSeconds(skillDelay[skillNum]);
+        isSkill[skillNum] = false;
+    }
+    IEnumerator Fast()
+    {
+        int skillNum = (int)SkillName.fast;
+
+        moveSpeed *= 1.4f;
+        mp = mp - skillConsume[skillNum];
+        //mainControl.mpBar.value = (float)mp / maxHp;
+        yield return new WaitForSeconds(skillDelay[skillNum]);
+        moveSpeed = baseMoveSpeed;
+        isSkill[skillNum] = false;
+    }
+    IEnumerator Shield()
+    {
+        int skillNum = (int)SkillName.shield;
+
+        shieldHp = maxHp;
+        shieldTime = 5.0f;
+        mp = mp - skillConsume[skillNum];
+        //mainControl.mpBar.value = (float)mp / maxHp;
+        yield return new WaitForSeconds(skillDelay[skillNum]);
+        isSkill[skillNum] = false;
+        yield return new WaitUntil(() => shieldTime <= 0);
+        shieldHp = 0;
+    }
+
+    public void SetHp(int damage)
+    {
+        if (!isStop)
+        {
+            if (shieldHp > 0)
+            {
+                shieldHp -= damage;
+            }
+            else
+            {
+                hp -= damage;
+                //mainControl.hpBar.value = (float)hp / maxHp;
+
+                if (hp <= 0)
+                {
+                    //mainControl.hpBar.value = 0;
+                    hp = 0;
+                    Time.timeScale = 0;
+                    //mainControl.OpenMenuUI();
+                }
+                
+            }
+        }
+    }
+
+    public void SetEx(int ex)
+    {
+        curEx += ex;
+        //mainControl.exBar.value = (float)curEx / maxEx;
+        if (curEx > maxEx)
+        {
+            if (level < ExNum.Count)
+            {
+                level++;
+                curEx = 0;
+                maxEx = ExNum[level];
+                Time.timeScale = 0;
+                maxHp = (int)(maxHp + (maxHp * 0.1f));
+                hp = maxHp;
+                maxMp = (int)(maxMp + (maxMp * 0.1f));
+                mp = maxMp;
+                attackDamage = (int)(attackDamage + (attackDamage * 0.1f));
+
+                // mainControl.LvText.text = "Lv." + level;
+                // mainControl.StopLvText.text = "Lv." + level;
+                // mainControl.hpBar.value = 1;
+                // mainControl.mpBar.value = 1;
+                // mainControl.OpenStopUI();
+
+            }
+        }
+    }
     
 }
